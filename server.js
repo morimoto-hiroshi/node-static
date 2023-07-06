@@ -1,8 +1,13 @@
+//利用モジュール
+const http = require('http');
 const nodeStatic = require('node-static');
 
-const server = new nodeStatic.Server('./public');
+//定数
+const PORT = 3000; //httpサーバーのポート
 
-require('http').createServer((request, response) => {
+//httpサーバーのrequestハンドラ
+const server = new nodeStatic.Server('./public');
+http.createServer((request, response) => {
     request.addListener('end', () => {
         //リクエストの受信が終わった
         server.serve(request, response, function (err, res) {
@@ -16,4 +21,6 @@ require('http').createServer((request, response) => {
             }
         });
     }).resume();
-}).listen(8080);
+}).listen(PORT, () => {
+    console.log(`listen http://localhost:${PORT}`);
+});
