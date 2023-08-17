@@ -7,17 +7,17 @@ const PORT = 3000; //httpサーバーのポート
 
 //httpサーバーのrequestハンドラ
 const server = new nodeStatic.Server('./public');
-http.createServer((request, response) => {
-    request.addListener('end', () => {
+http.createServer((req, res) => {
+    req.addListener('end', () => {
         //リクエストの受信が終わった
-        server.serve(request, response, function (err, res) {
+        server.serve(req, res, function (err, res) {
             //レスポンスの送信が終わった
             if (err) {
-                response.writeHead(err.status, err.headers);
-                response.end();
+                res.writeHead(err.status, err.headers);
+                res.end();
             } else {
                 //ログを出力
-                console.log(request.method, request.url, res.status, res.message, res.headers['Content-Length'] ?? '-', res.headers['Content-Type'] ?? '-');
+                console.log(req.method, req.url, res.status, res.message, res.headers['Content-Length'] ?? '-', res.headers['Content-Type'] ?? '-');
             }
         });
     }).resume();
